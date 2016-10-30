@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="704.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="konishi.fx.controler.FxControl">
+   <children>
+      <Label fx:id="current_time_label" alignment="CENTER" contentDisplay="CENTER" layoutX="451.0" layoutY="46.0" prefHeight="78.0" prefWidth="208.0" text="CurrentTime" textFill="#ee0000">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Button layoutX="465.0" layoutY="207.0" mnemonicParsing="false" onMouseClicked="#handleAddButton" prefHeight="38.0" prefWidth="84.0" text="Add" />
+      <Button layoutX="573.0" layoutY="207.0" mnemonicParsing="false" onMouseClicked="#handleDeleteButton" prefHeight="38.0" prefWidth="84.0" text="Delete" />
+      <Button layoutX="453.0" layoutY="360.0" mnemonicParsing="false" onMouseClicked="#handleOpenFileButton" prefHeight="25.0" prefWidth="84.0" text="OpenFile" />
+      <Button layoutX="615.0" layoutY="442.0" mnemonicParsing="false" onMouseClicked="#handleSaveButton" prefHeight="25.0" prefWidth="63.0" text="Save" />
+      <Button fx:id="play_button" layoutX="465.0" layoutY="137.0" mnemonicParsing="false" onMouseClicked="#handlePlayButton" prefHeight="38.0" prefWidth="84.0" text="START" />
+      <Button layoutX="573.0" layoutY="137.0" mnemonicParsing="false" onMouseClicked="#handleResetButton" prefHeight="38.0" prefWidth="84.0" text="RESET" />
+      <TextField fx:id="file_name" layoutX="456.0" layoutY="442.0" prefHeight="25.0" prefWidth="146.0" promptText="File Name" />
+      <Button layoutX="519.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#handleInterludeButton" prefHeight="38.0" prefWidth="84.0" text="Interlude" />
+      <Button layoutX="548.0" layoutY="360.0" mnemonicParsing="false" onMouseClicked="#handleSaveDirectoryButton" prefHeight="25.0" prefWidth="129.0" text="SelectDirectory" />
+      <TextField fx:id="dir_name" layoutX="457.0" layoutY="401.0" onMouseClicked="#handleDirectoryName" prefHeight="25.0" prefWidth="215.0" promptText="Directory Name" />
+      <TextArea fx:id="lyrics_field" layoutX="48.0" layoutY="46.0" maxHeight="442.0" minHeight="442.0" prefHeight="442.0" prefWidth="377.0" promptText="Please write lyrics here!">
+         <font>
+            <Font name="SansSerif Regular" size="13.0" />
+         </font></TextArea>
+      <Slider fx:id="time_slider" layoutX="36.0" layoutY="509.0" onMouseDragged="#handleSlider" prefHeight="16.0" prefWidth="632.0" />
+   </children>
+</AnchorPane>
