@@ -1,8 +1,11 @@
 <Lyrics Generator.exe / Lyrics Generator.jar>
 
 Version: v1.0.0
+
 Release-Date: 2016/10/30
+
 Author: konishi
+
 動作確認: Windows10, Ubuntu14.01(Linux), JRE(Java Runtime Environment)1.8.0(LyricsGenerator.jarのみ)
 
 このソフトウェアは、Walkmanの歌詞同期テキストを生成することを目的としたものです。
@@ -11,7 +14,7 @@ Author: konishi
 また、書きかけの歌詞同期テキストも読み込むことが可能です。
 exeバージョンとjarバージョンがありますが、JRE(Java)がPCにインストールされている場合は、jarバージョンも使用できます。
 (exeとの違いは、デフォルトで、歌詞ファイルの保存場所としてjarが実行された場所に設定してくれるというだけでほとんど変わりありません。)
-疑問点(操作方法など)・改善点・感想・意見(こんなものを作ってほしい！など)はドシドシTwitter(https://twitter.com/4b6f6e69736869)までお寄せ下さい！
+疑問点(操作方法など)・改善点・感想・意見(こんなものを作ってほしい！など)はドシドシTwitter<https://twitter.com/4b6f6e69736869>までお寄せ下さい！
 
 [操作説明]
 
