@@ -1,57 +1,83 @@
 Lyrics Generator.exe / Lyrics Generator.jar
-===========================================
+==========================================
 
-Version: v1.0.0  
+Version: v1.2.0  
 Release-Date: 2016/10/30  
 Author: konishi  
-����m�F: Windows10, Ubuntu14.01(Linux), JRE(Java Runtime Environment)1.8.0(LyricsGenerator.jar�̂�)  
+動作確認: Windows10, Ubuntu14.01(Linux), JRE(Java Runtime Environment)1.8.0(LyricsGenerator.jarのみ)
 
-���̃\�t�g�E�F�A�́AWalkman�̉̎������e�L�X�g�𐶐����邱�Ƃ�ړI�Ƃ������̂ł��B  
-�̎��́A�\�t�g�E�F�A��ŏ������Ƃ��A�̎��t�@�C����ǂݍ��ނ��Ƃ��ł��܂��B  
-�܂��A���������̉̎������e�L�X�g���ǂݍ��ނ��Ƃ��\�ł��B  
-exe�o�[�W������jar�o�[�W����������܂����AJRE(Java)��PC�ɃC���X�g�[������Ă���ꍇ�́Ajar�o�[�W�������g�p�ł��܂��B  
-(exe�Ƃ̈Ⴂ�́A�f�t�H���g�ŁA�̎��t�@�C���̕ۑ��ꏊ�Ƃ���jar�����s���ꂽ�ꏊ�ɐݒ肵�Ă����Ƃ��������łقƂ�Ǖς�肠��܂���B)  
+このソフトウェアは、Walkmanの歌詞同期テキストを生成することを目的としたものです。
+音楽とタイマーの時間を同期させることで任意のタイミングで歌詞の時間を入力することが可能です。
+歌詞は、ソフトウェア上で書くことも、歌詞ファイルを読み込むこともできます。
+また、書きかけの歌詞同期テキストも読み込むことが可能です。
+exeバージョンとjarバージョンがありますが、JRE(Java)がPCにインストールされている場合は、jarバージョンも使用できます。
+(exeとの違いは、デフォルトで、歌詞ファイルの保存場所としてjarが実行された場所に設定してくれるというだけでほとんど変わりありません。)
 
-[�������]
+## バージョン情報
+### v1.0.0
+- リリースしました。
 
-[�̎����̓e�L�X�g�t�B�[���h(Please write lyrics here!�Ə�����Ă���Ƃ���)]
-�����ɉ̎��������Ă��������B
-�O���̉̎��t�@�C����ǂݍ��܂����ꍇ�́A�̎����\������܂��B
+### v1.1.0 (2016/10/30)  
+- OS依存による問題を解消しました。
 
-[START]
-�X�g�b�v�E�H�b�`���X�^�[�g�����܂��B
-���Ԃ�5���܂łł��B
-
-[�o�[(��ʈ�ԉ��̃o�[)]
-�o�[�����E�Ƀh���b�O���邱�Ƃɂ��A���Ԃ��w�肷�邱�Ƃ��ł��܂��B
-
-[RESET]
-���Ԃ�[00:00]�Ƀ��Z�b�g���܂��B
-
-[Add]
-�{�^�����������ƂŁA�̎��Ɏ��Ԃ�t���Ă����܂�
-
-[Delete]
-�̎��̎��Ԃ��Ōォ�珇�Ԃɍ폜���܂��B
-
-[Interlude]
-�ԑt������[----------��----------]�Ƃ����̎���ǉ����܂��B
-
-[OpenFile]
-�����̉̎��t�@�C����ǂݍ��݂܂��B
-���������̉̎������t�@�C�����ǂݍ��ނ��Ƃ��ł��܂��B
-
-[SelectDirectory]
-�ۑ�����t�H���_�̏ꏊ��I�����Ă��������B
-LyricsGenerator.jar�ɂ��ẮA�f�t�H���g�ł́A���̃\�t�g�E�F�A���u����Ă���f�B���N�g���ɕۑ�����܂��B
-
-[File Name]
-�����Ƀt�@�C�����������Ă��������B
-Walkman�̉̎������e�L�X�g�̊g���q��[.lrc]�ł��B
-
-[Save]
-���̃{�^�����������Ƃɂ���āA�ۑ����܂��B
-[Save]�������Ȃ��ƕۑ�����܂���̂ŁA�����ӂ��������B
+### v1.2.0 (2016/10/30)  
+- UIを変更しました。
+- 歌詞の時間を全削除するボタンの追加
+- 歌詞も全て削除するボタンの追加
+- 設定タブを作成し、歌詞の表示サイズを変更できるバーの追加
+- GFMに基づいたREADME.mdの作成
 
 
+## 操作説明
 
+## Editorタブ
+### 歌詞入力テキストフィールド
+ここに歌詞を書いてください。
+外部の歌詞ファイルを読み込ませた場合は、歌詞が表示されます。
+
+### START
+ストップウォッチをスタートさせます。
+時間は5分までです。
+
+### バー(画面一番下のバー)
+バーを左右にドラッグすることにより、時間を指定することができます。
+
+### RESET
+時間を[00:00]にリセットします。
+
+### Add
+ボタンを押すことで、歌詞に時間を付けていきます
+
+### Delete
+歌詞の時間を最後から順番に削除します。
+
+### Interlude
+間奏部分に[----------♪----------]という歌詞を追加します。
+
+### OpenFile
+既存の歌詞ファイルを読み込みます。
+書きかけの歌詞同期ファイルも読み込むことができます。
+
+### SelectDirectory
+保存するフォルダの場所を選択してください。
+LyricsGenerator.jarについては、デフォルトでは、このソフトウェアが置かれているディレクトリに保存されます。
+
+### File Name
+ここにファイル名を書いてください。
+Walkmanの歌詞同期テキストの拡張子は[.lrc]です。
+
+### Save
+このボタンを押すことによって、保存します。
+[Save]を押さないと保存されませんので、ご注意ください。
+
+### Lyrics Time Clear
+歌詞の時間をすべて消去します。
+
+### All Clear
+歌詞も含めてすべて削除します。
+
+
+## Settingsタブ
+### Size
+歌詞の文字の大きさを変更できます。
+デフォルトでは13pxです。

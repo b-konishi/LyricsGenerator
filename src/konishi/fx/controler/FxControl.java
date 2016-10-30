@@ -24,6 +24,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -31,13 +32,13 @@ import javafx.util.Duration;
 public class FxControl {
 	
 	private static final int TIME_MAX = 300;
-//	private static final int SIZE_MAX = 30;
+	private static final int SIZE_MAX = 30;
 
 	@FXML public Slider time_slider;
-	
-//	@FXML public Slider size_slider;
-//	@FXML public Label size_label;
-	
+
+	@FXML public Slider size_slider;
+	@FXML public Label size_label;
+		
 	@FXML public Label current_time_label;
 	@FXML public TextArea lyrics_field;
 	@FXML public Button play_button;
@@ -59,18 +60,15 @@ public class FxControl {
 	private final StringProperty timeSeconds = new SimpleStringProperty();
     private Duration time = Duration.ZERO;
     
+    /**
+     * 初期設定
+     */
 	public void initialize() {
 		time_slider.setMin(0);
 		time_slider.setMax(TIME_MAX);
 		
-//		size_slider.setMin(10);
-//		size_slider.setMax(SIZE_MAX);
-		
-		openFileChooser = new FileChooser();
-		openFileChooser.setTitle("Open Lyrics File");
-		
-		directoryChooser = new DirectoryChooser();
-		directoryChooser.setTitle("Select Save Directory");
+		size_slider.setMin(10);
+		size_slider.setMax(SIZE_MAX);
 		
 		dir_name.setText(new File(".").getAbsoluteFile().getParent()+System.getProperty("file.separator"));
 		
@@ -80,11 +78,14 @@ public class FxControl {
 		SPACER = lyrics_field.getFont().getSize()*8;
 		System.out.println(SPACER);
 		
-//		size_slider.setValue((int)lyrics_field.getFont().getSize());
-//		size_label.setText("Size: "+(int)size_slider.getValue());
+		size_slider.setValue((int)lyrics_field.getFont().getSize());
+		size_label.setText("Size: "+(int)size_slider.getValue());
 		
 	}
 	
+	/**
+	 * 時間追加時の自動スクロール調整
+	 */
 	public void scroll() {
 		lyrics_field.textProperty().addListener(new ChangeListener<Object>() {
 		    @Override
@@ -100,7 +101,11 @@ public class FxControl {
 		});
 	}
 	
-	
+	/**
+	 * Start/Stopボタン
+	 * @param event
+	 * @throws Exception
+	 */
 	@FXML public void handlePlayButton(MouseEvent event) throws Exception  {
 		if (active) {
 			play_button.setText("RESTART");
@@ -128,6 +133,12 @@ public class FxControl {
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		timeline.play();
 	}
+	
+	/**
+	 * 時間表示テキストの生成
+	 * @param duration
+	 * @return
+	 */
 	private String makeText(final Duration duration) {
         return String.format("%02d:%02d",
                 (long) (duration.toMinutes() % 60.0),
@@ -135,27 +146,41 @@ public class FxControl {
                 );
 //        		+ (active ? " ▶" : " ■");
     }
+	
+	/**
+	 * 時間のリセット
+	 */
 	public void timeReset() {
         time = Duration.ZERO;
         timeSeconds.set(makeText(time));
         play_button.setText("START");
     }
 	
+	/**
+	 * 時間リセットボタン
+	 * @param event
+	 * @throws Exception
+	 */
 	@FXML public void handleResetButton(MouseEvent event) throws Exception  {
 		timeReset();
 	}
 	
+	/**
+	 * 時間スライダー
+	 * @param event
+	 * @throws Exception
+	 */
 	@FXML public void handleSlider(MouseEvent event) throws Exception  {
 		System.out.println(time_slider.getValue());
 		time = new Duration(time_slider.getValue()*1000);
 		timeSeconds.set(makeText(time));
 	}
 	
-//	@FXML public void handleSizeSlider(MouseEvent event) throws Exception  {
-//		lyrics_field.setFont(Font.font(size_slider.getValue()));
-//		size_label.setText("Size: "+(int)size_slider.getValue());
-//	}
-	
+	/**
+	 * 時間追加ボタン
+	 * @param event
+	 * @throws Exception
+	 */
 	@FXML public void handleAddButton(MouseEvent event) throws Exception  {		
 		scroll();
 		
@@ -176,6 +201,12 @@ public class FxControl {
 			currentLine++;
 
 	}
+	
+	/**
+	 * 時間削除ボタン
+	 * @param event
+	 * @throws Exception
+	 */
 	@FXML public void handleDeleteButton(MouseEvent event) throws Exception  {
 		scroll();
 		
@@ -197,11 +228,45 @@ public class FxControl {
 
 	}
 	
+	/**
+	 * 間奏追加ボタン
+	 * @param event
+	 * @throws Exception
+	 */
 	@FXML public void handleInterludeButton(MouseEvent event) throws Exception  {
 		lyrics_field.appendText("----------♪----------\n");
 	}
 	
+	/**
+	 * 歌詞の時間の管理
+	 */
+	public void setCurrentLine() {
+		String[] lyrics2 = lyrics_field.getText().split("\n");
+		String regex = "\\[[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\]";
+		Pattern p = Pattern.compile(regex);
+		for (int i = 0; i < lyrics2.length; i++) {
+			Matcher m = p.matcher(lyrics2[i]);
+			if (m.find()) {
+				currentLine = i+1;
+			}
+		}
+	}
+	
+	/**
+	 * ファイルオープンボタン
+	 * @param event
+	 * @throws Exception
+	 */
 	@FXML public void handleOpenFileButton(MouseEvent event) throws Exception  {
+		openFileChooser = new FileChooser();
+		openFileChooser.setTitle("Open Lyrics File");
+		openFileChooser.getExtensionFilters().add(
+				new FileChooser.ExtensionFilter("Walkman Lyrics Files", "*.lrc")
+				);
+		openFileChooser.getExtensionFilters().add(
+				new FileChooser.ExtensionFilter("All Files", "*.*")
+				);
+		
 		File openFile = openFileChooser.showOpenDialog(null);
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(openFile), detectFileEncoding(openFile)));
 		
@@ -216,33 +281,92 @@ public class FxControl {
 		
 		br.close();
 		
-		
-		String[] lyrics2 = lyrics_field.getText().split("\n");
-		String regex = "\\[[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\]";
-		Pattern p = Pattern.compile(regex);
-		for (int i = 0; i < lyrics2.length; i++) {
-			Matcher m = p.matcher(lyrics2[i]);
-			if (m.find()) {
-				currentLine = i+1;
-			}
-		}
+		setCurrentLine();
 	}
 	
+	/**
+	 * セーブするディレクトリの選択ボタン
+	 * @param event
+	 * @throws Exception
+	 */
 	@FXML public void handleSaveDirectoryButton(MouseEvent event) throws Exception  {
+		directoryChooser = new DirectoryChooser();
+		directoryChooser.setTitle("Select Save Directory");
+		
 		File saveDirectory = directoryChooser.showDialog(null);
 		dir_name.setText(saveDirectory.getPath()+System.getProperty("file.separator"));
 	}
 	
+	/**
+	 * 歌詞セーブボタン
+	 * @param event
+	 * @throws Exception
+	 */
 	@FXML public void handleSaveButton(MouseEvent event) throws Exception  {
 		FileWriter fw = new FileWriter(dir_name.getText() + file_name.getText());
 		fw.write(lyrics_field.getText());
 		fw.close();
 	}
+
+	/**
+	 * 歌詞の時間クリアボタン
+	 * @param event
+	 * @throws Exception
+	 */
+	@FXML public void handleLyricsTimeClearButton(MouseEvent event) throws Exception  {
+		String[] lyrics = lyrics_field.getText().split("\n");
+		StringBuilder sb = new StringBuilder();
+		
+		for (int i = 0; i < lyrics.length; i++) {
+			sb.append(lyrics[i]);
+			if (i < currentLine) {
+				sb.replace(0, 10, "");
+			}
+			lyrics[i] = sb.toString();
+			sb.setLength(0);
+		}
+		lyrics_field.clear();
+		lyrics_field.appendText(String.join("\n", lyrics));
+		lyrics_field.positionCaret(0);
+		
+		currentLine = 0;
+	}
 	
+	/**
+	 * 歌詞クリアボタン
+	 * @param event
+	 * @throws Exception
+	 */
+	@FXML public void handleAllClearButton(MouseEvent event) throws Exception  {
+		lyrics_field.clear();
+		currentLine = 0;
+	}
+	
+	/**
+	 * ディレクトリ表示テキストフィールド
+	 * @param event
+	 * @throws Exception
+	 */
 	@FXML public void handleDirectoryName(MouseEvent event) throws Exception  {
 		dir_name.end();
 	}
 	
+	/**
+	 * 文字サイズ変更スライダー
+	 * @param event
+	 * @throws Exception
+	 */
+	@FXML public void handleSizeSlider(MouseEvent event) throws Exception  {
+		lyrics_field.setFont(Font.font(size_slider.getValue()));
+		size_label.setText("Size: "+(int)size_slider.getValue());
+	}
+	
+	/**
+	 * ファイルのエンコーディングを調べる
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
 	public static String detectFileEncoding(File file) throws IOException  {
 	    String result = null;
 	    byte[] buf = new byte[4096];
