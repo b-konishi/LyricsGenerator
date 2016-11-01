@@ -31,13 +31,17 @@ import javafx.util.Duration;
 
 public class FxControl {
 	
-	private static final int TIME_MAX = 300;
+	private static final int TIME_LIMITED_MAX = 1200;
 	private static final int SIZE_MAX = 30;
-
+	private int timeMax = 300;
+	
 	@FXML public Slider time_slider;
 
 	@FXML public Slider size_slider;
 	@FXML public Label size_label;
+	
+	@FXML public Slider time_max_slider;
+	@FXML public Label time_max_label;
 		
 	@FXML public Label current_time_label;
 	@FXML public TextArea lyrics_field;
@@ -53,7 +57,6 @@ public class FxControl {
 	private int currentLine = 0;
 	
 	private double scrollValue;
-	private static double SPACER = 100;
 	
 	private boolean active;
 	private Timeline timeline;
@@ -65,22 +68,27 @@ public class FxControl {
      */
 	public void initialize() {
 		time_slider.setMin(0);
-		time_slider.setMax(TIME_MAX);
+		time_slider.setMax(timeMax);
 		
 		size_slider.setMin(10);
 		size_slider.setMax(SIZE_MAX);
+		
+		time_max_slider.setMin(0);
+		time_max_slider.setMax(TIME_LIMITED_MAX/60);
 		
 		dir_name.setText(new File(".").getAbsoluteFile().getParent()+System.getProperty("file.separator"));
 		
 		current_time_label.textProperty().bind(timeSeconds);
 		timeReset();
 		
-		SPACER = lyrics_field.getFont().getSize()*8;
-		System.out.println(SPACER);
 		
 		size_slider.setValue((int)lyrics_field.getFont().getSize());
 		size_label.setText("Size: "+(int)size_slider.getValue());
 		
+		time_max_slider.setValue(timeMax/60);
+		time_max_label.setText("Max Time:  "+(int)time_max_slider.getValue()+"min");
+		
+		scroll();
 	}
 	
 	/**
@@ -91,8 +99,11 @@ public class FxControl {
 		    @Override
 		    public void changed(ObservableValue<?> observable, Object oldValue,
 		            Object newValue) {
-		    	if (lyrics_field.getFont().getSize()*currentLine - lyrics_field.getHeight()/2+SPACER > 0) {
-		    		scrollValue = lyrics_field.getFont().getSize()*currentLine - lyrics_field.getHeight()/2+SPACER;
+		    	
+		    	double currentScroll = lyrics_field.getBaselineOffset()*(currentLine-1)+80;
+		    	double scrollPadding = (currentScroll + lyrics_field.getFont().getSize())/20;
+		    	if (currentScroll+scrollPadding > lyrics_field.getHeight()/2) {
+		    		scrollValue = currentScroll - lyrics_field.getHeight()/2 + scrollPadding;
 		    	} else {
 		    		scrollValue = 0;
 		    	}
@@ -124,7 +135,7 @@ public class FxControl {
 	                    time = time.add(duration);
 	                    timeSeconds.set(makeText(time));
 	                    time_slider.setValue(time.toSeconds());
-	                    if (time.toSeconds() > TIME_MAX)
+	                    if (time.toSeconds() > timeMax)
 	                    	timeReset();
 	                }
 	            )
@@ -182,15 +193,12 @@ public class FxControl {
 	 * @throws Exception
 	 */
 	@FXML public void handleAddButton(MouseEvent event) throws Exception  {		
-		scroll();
-		
-		
 		String[] lyrics = lyrics_field.getText().split("\n");
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < lyrics.length; i++) {
 			if (currentLine == i) {
 				sb.append("["+makeText(time)+":00]");
-			}			
+			}
 			sb.append(lyrics[i]);
 			lyrics[i] = sb.toString();
 			sb.setLength(0);
@@ -208,8 +216,6 @@ public class FxControl {
 	 * @throws Exception
 	 */
 	@FXML public void handleDeleteButton(MouseEvent event) throws Exception  {
-		scroll();
-		
 		String[] lyrics = lyrics_field.getText().split("\n");
 		StringBuilder sb = new StringBuilder();
 		
@@ -226,6 +232,7 @@ public class FxControl {
 		if (currentLine != 0)
 			currentLine--;
 
+
 	}
 	
 	/**
@@ -241,11 +248,11 @@ public class FxControl {
 	 * 歌詞の時間の管理
 	 */
 	public void setCurrentLine() {
-		String[] lyrics2 = lyrics_field.getText().split("\n");
+		String[] lyrics = lyrics_field.getText().split("\n");
 		String regex = "\\[[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\]";
 		Pattern p = Pattern.compile(regex);
-		for (int i = 0; i < lyrics2.length; i++) {
-			Matcher m = p.matcher(lyrics2[i]);
+		for (int i = 0; i < lyrics.length; i++) {
+			Matcher m = p.matcher(lyrics[i]);
 			if (m.find()) {
 				currentLine = i+1;
 			}
@@ -282,6 +289,8 @@ public class FxControl {
 		br.close();
 		
 		setCurrentLine();
+		
+		System.out.println(currentLine);
 	}
 	
 	/**
@@ -359,6 +368,18 @@ public class FxControl {
 	@FXML public void handleSizeSlider(MouseEvent event) throws Exception  {
 		lyrics_field.setFont(Font.font(size_slider.getValue()));
 		size_label.setText("Size: "+(int)size_slider.getValue());
+	}
+	
+	/**
+	 * 計測時間最大値変更スライダー
+	 * default: 300s
+	 * @param event
+	 * @throws Exception
+	 */
+	@FXML public void handleTimeMaxSlider(MouseEvent event) throws Exception  {
+		timeMax = (int)time_max_slider.getValue()*60;
+		time_slider.setMax(timeMax);
+		time_max_label.setText("Max Time: "+(int)time_max_slider.getValue()+"min");
 	}
 	
 	/**

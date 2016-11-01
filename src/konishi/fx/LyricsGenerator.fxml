@@ -47,8 +47,10 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Slider fx:id="size_slider" layoutX="154.0" layoutY="43.0" onMouseDragged="#handleSizeSlider" />
-                        <Label fx:id="size_label" alignment="CENTER" contentDisplay="CENTER" layoutX="28.0" layoutY="38.0" prefHeight="26.0" prefWidth="112.0" text="Font Size" />
+                        <Slider fx:id="size_slider" layoutX="183.0" layoutY="43.0" onMouseDragged="#handleSizeSlider" />
+                        <Label fx:id="size_label" alignment="CENTER" contentDisplay="CENTER" layoutX="28.0" layoutY="38.0" prefHeight="26.0" prefWidth="130.0" text="Font Size" />
+                        <Label fx:id="time_max_label" alignment="CENTER" contentDisplay="CENTER" layoutX="28.0" layoutY="104.0" prefHeight="26.0" prefWidth="130.0" text="Max Time" />
+                        <Slider fx:id="time_max_slider" layoutX="183.0" layoutY="109.0" onMouseDragged="#handleTimeMaxSlider" />
                      </children>
                   </AnchorPane>
                </content>

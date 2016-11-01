@@ -1,7 +1,7 @@
 Lyrics Generator.exe / Lyrics Generator.jar
 ==========================================
 
-Version: v1.2.0  
+Version: v1.3.0  
 Release-Date: 2016/10/30  
 Author: konishi  
 動作確認: Windows10, Ubuntu14.01(Linux), JRE(Java Runtime Environment)1.8.0(LyricsGenerator.jarのみ)
@@ -26,6 +26,10 @@ exeバージョンとjarバージョンがありますが、JRE(Java)がPCにイ
 - 歌詞も全て削除するボタンの追加
 - 設定タブを作成し、歌詞の表示サイズを変更できるバーの追加
 - GFMに基づいたREADME.mdの作成
+
+### v1.3.0 (2016/11/1)
+- 設定タブに、ストップウォッチの最大の時間を0min-20minの間で調整可能にするバーの追加
+- 歌詞時間追加時の自動スクロール量を調整
 
 
 ## 操作説明
@@ -81,3 +85,7 @@ Walkmanの歌詞同期テキストの拡張子は[.lrc]です。
 ### Size
 歌詞の文字の大きさを変更できます。
 デフォルトでは13pxです。
+
+### Max Time
+ストップウォッチの最大の時間を変更できます。
+デフォルトでは5minです。
